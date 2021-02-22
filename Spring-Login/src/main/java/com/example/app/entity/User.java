@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -26,16 +29,24 @@ public class User implements Serializable {
 	@GenericGenerator(name = "native", strategy = "native")
 	private Long id;
 	@Column
+	@NotBlank(message = "El campo no puede estar vacio")
+	@Size(min = 2,max = 20,message = "El nombre debe estar entre 2 y 20 caracteres.")
 	private String firstName;
 	@Column
+	@NotBlank(message = "El campo no puede estar vacio")
 	private String lastName;
 	@Column(unique = true)
+	@NotBlank(message = "El campo no puede estar vacio")
+	@Email(message = "El email no cumple con el formato especificado.")
 	private String email;
 	@Column(unique = true)
+	@NotBlank(message = "El campo no puede estar vacio")
 	private String username;
 	@Column
+	@NotBlank(message = "El campo no puede estar vacio")
 	private String password;
 	@Transient
+	@NotBlank(message = "El campo no puede estar vacio")
 	private String confirmPassword;
 
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -105,12 +116,14 @@ public class User implements Serializable {
 		this.confirmPassword = confirmPassword;
 	}
 
-	public Set getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
+
+
 
 }
