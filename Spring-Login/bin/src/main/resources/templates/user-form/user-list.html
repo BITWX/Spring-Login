@@ -1,9 +1,5 @@
 
 <div class="table-responsive">
-	<div id="deleteError" th:if="${deleteErrorMessage}"
-		class="alert alert-danger text-center" role="alert">
-		<span th:text="${deleteErrorMessage}"></span>
-	</div>
 	<table id="userList"
 		class="table table-bordered table-hover table-striped">
 		<thead class="thead-light">
@@ -23,22 +19,9 @@
 				<td th:text="${user.lastName}"></td>
 				<td th:text="${user.username}"></td>
 				<td th:text="${user.email}"></td>
-				<td><a href="#" th:href="@{'/editUser/'+${user.id}}"><i
-						class="fas fa-edit"></i></a> | <a href="#"
-					th:onclick="'javascript:confirmDelete(\''+ ${user.id} +'\');'"><i
+				<td><a href="#"><i class="fas fa-edit"></i></a> | <a href="#"><i
 						class="fas fa-user-times"></i></a></td>
 			</tr>
 		</tbody>
 	</table>
 </div>
-<script type="text/javascript">
-	function confirmDelete(id) {
-		$('#deleteModal').modal('show');
-		$("#userIdHiddenInput").val(id);
-	}
-
-	function deleteUser() {
-		var id = $("#userIdHiddenInput").val();
-		window.location = "deleteUser/" + id;
-	}
-</script>

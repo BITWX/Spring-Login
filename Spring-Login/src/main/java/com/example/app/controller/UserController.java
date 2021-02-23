@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.app.entity.User;
@@ -62,4 +63,53 @@ public class UserController {
 		return "user-form/user-view";
 	}
 
+	@GetMapping("/editUser/{id}")
+	public String getEditFormUser(Model model, @PathVariable(name = "id") Long id) throws Exception {
+		User userEdit = userService.getUserById(id);
+		model.addAttribute("userForm", userEdit);
+		model.addAttribute("userList", userService.getAllUsers());
+		model.addAttribute("roleList", roleRepository.findAll());
+		model.addAttribute("formTab", "active");
+		model.addAttribute("editMode", true);
+
+		return "user-form/user-view";
+	}
+
+	@PostMapping("/editUser")
+	public String editUser(@Valid @ModelAttribute("userForm") User user, BindingResult bindingResult, ModelMap model) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("userForm", user);
+			model.addAttribute("formTab", "active");
+			model.addAttribute("editMode", "true");
+		} else {
+			try {
+				userService.updateUser(user);
+				model.addAttribute("userForm", new User());
+				model.addAttribute("listTab", "active");
+			} catch (Exception e) {
+				model.addAttribute("formErrorMessage", e.getMessage());
+				model.addAttribute("userForm", user);
+				model.addAttribute("formTab", "active");
+				model.addAttribute("userList", userService.getAllUsers());
+				model.addAttribute("roles", roleRepository.findAll());
+				model.addAttribute("editMode", "true");
+			}
+		}
+		return "user-form/user-view";
+	}
+	
+	@GetMapping("/userForm/cancel")
+	public String cancelEditUser() {
+		 return "redirect:/userForm";
+	}
+	
+	@GetMapping("/deleteUser/{id}")
+	public String deleteUser(Model model,@PathVariable(name = "id") Long id) {
+		try {
+			userService.deleteUser(id);
+		} catch (Exception e) {
+			model.addAttribute("deleteErrorMessage",e.getMessage());
+		}
+		return userForm(model);
+	}
 }
