@@ -1,5 +1,5 @@
 <form id="userForm" th:object="${userForm}" method="post" class="form"
-	role="form" th:action="${editForm}?@{/editUser}:@{/userForm}">
+	role="form" th:action="${editMode}?@{/editUser}:@{/userForm}">
 	<div class="alert alert-danger text-center" th:if="${formErrorMessage}"
 		th:text="${formErrorMessage}">Name Error</div>
 	<input class="form-control" type=hidden th:field="${userForm.id}"

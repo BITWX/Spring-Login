@@ -70,7 +70,7 @@ public class UserController {
 		model.addAttribute("userList", userService.getAllUsers());
 		model.addAttribute("roleList", roleRepository.findAll());
 		model.addAttribute("formTab", "active");
-		model.addAttribute("editMode", true);
+		model.addAttribute("editMode", "true");
 
 		return "user-form/user-view";
 	}
@@ -95,21 +95,23 @@ public class UserController {
 				model.addAttribute("editMode", "true");
 			}
 		}
+		model.addAttribute("userList", userService.getAllUsers());
+		model.addAttribute("roleList", roleRepository.findAll());
 		return "user-form/user-view";
 	}
-	
+
 	@GetMapping("/userForm/cancel")
 	public String cancelEditUser() {
-		 return "redirect:/userForm";
+		return "redirect:/userForm";
 	}
-	
+
 	@GetMapping("/deleteUser/{id}")
-	public String deleteUser(Model model,@PathVariable(name = "id") Long id) {
+	public String deleteUser(Model model, @PathVariable(name = "id") Long id) {
 		try {
 			userService.deleteUser(id);
 		} catch (Exception e) {
-			model.addAttribute("deleteErrorMessage",e.getMessage());
+			model.addAttribute("deleteErrorMessage", e.getMessage());
 		}
-		return userForm(model);
+		return "redirect:/userForm";
 	}
 }
