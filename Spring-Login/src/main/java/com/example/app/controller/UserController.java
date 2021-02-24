@@ -79,6 +79,7 @@ public class UserController {
 		model.addAttribute("editMode", true);
 		model.addAttribute("passwordForm", new ChangePasswordForm(id));
 
+
 		return "user-form/user-view";
 	}
 
@@ -104,6 +105,8 @@ public class UserController {
 				model.addAttribute("passwordForm", new ChangePasswordForm(user.getId()));
 			}
 		}
+		model.addAttribute("userList", userService.getAllUsers());
+		model.addAttribute("roleList", roleRepository.findAll());
 		return "user-form/user-view";
 	}
 
@@ -119,7 +122,7 @@ public class UserController {
 		} catch (Exception e) {
 			model.addAttribute("deleteErrorMessage", e.getMessage());
 		}
-		return userForm(model);
+		return "redirect:/userForm";
 	}
 
 	@PostMapping("/editUser/changePassword")
