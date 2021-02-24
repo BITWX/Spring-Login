@@ -3,8 +3,12 @@ package com.example.app.service;
 import java.rmi.server.ExportException;
 import java.util.Optional;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.app.dto.ChangePasswordForm;
 import com.example.app.entity.User;
@@ -63,6 +67,7 @@ public class UserServiceImpl implements UserService {
 			throw new Exception("Las contraseñas no coinciden");
 		}
 		userStored.setPassword(form.getNewPassword());
+		userStored.setConfirmPassword(form.getConfirmPassword());
 		return userRepository.save(userStored);
 	}
 
@@ -72,6 +77,7 @@ public class UserServiceImpl implements UserService {
 		to.setLastName(from.getLastName());
 		to.setEmail(from.getEmail());
 		to.setRoles(from.getRoles());
+		to.setConfirmPassword(from.getConfirmPassword());
 	}
 
 	private boolean checkUsernameAvaliable(User user) throws Exception {
