@@ -135,6 +135,7 @@ public class UserController {
 			}
 			userService.changePassword(form);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 		return ResponseEntity.ok("sucess");
